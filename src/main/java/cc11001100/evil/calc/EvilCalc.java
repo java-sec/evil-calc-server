@@ -1,9 +1,10 @@
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * @author CC11001100
  */
-public class EvilCalc {
+public class EvilCalc implements Serializable {
 
     private final String MAC_CALC = "open /System/Applications/Calculator.app";
     private final String WINDOWS_CALC = "calc";
