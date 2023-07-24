@@ -50,7 +50,7 @@ public class LdapServer {
             System.out.println("Listening on 0.0.0.0:" + this.port); //$NON-NLS-1$
             ds.startListening();
 
-            System.out.println(String.format("You can use: ldap://localhost:%d/EvilCalc", this.port));
+            System.out.printf("You can use: \nldap://localhost:%d/EvilCalc\n", this.port);
 
         } catch (Exception e) {
             e.printStackTrace();

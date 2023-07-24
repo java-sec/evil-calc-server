@@ -25,6 +25,7 @@ public class HttpServer {
                 return null;
             }
         });
+        System.out.println("http server url: " + this.getServerUrl());
     }
 
     public void shutdown() {

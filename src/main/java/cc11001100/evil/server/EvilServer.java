@@ -1,6 +1,9 @@
 package cc11001100.evil.server;
 
+import cc11001100.evil.config.Config;
+
 import javax.naming.NamingException;
+import java.io.IOException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -10,15 +13,32 @@ import java.rmi.RemoteException;
  */
 public class EvilServer {
 
+    // 配置文件默认的名称
+    public static final String DEFAULT_CONFIG_NAME = "application.properties";
+
     private HttpServer httpServer;
     private RmiServer rmiServer;
 
-    public void runServer() throws AlreadyBoundException, NamingException, RemoteException {
+    private Config config;
 
-        this.httpServer = new HttpServer(10086);
+    public EvilServer() {
+        this(new Config());
+    }
+
+    public EvilServer(String configName) throws IOException {
+        this(new Config(configName));
+    }
+
+    public EvilServer(Config config) {
+        this.config = config;
+    }
+
+    public void runServer() throws AlreadyBoundException, NamingException, IOException {
+
+        this.httpServer = new HttpServer(this.config.getHttpPort());
         httpServer.run();
 
-        new LdapServer(10010).run(httpServer.getServerUrl());
+        new LdapServer(this.config.getLdapPort()).run(httpServer.getServerUrl());
     }
 
     public void shutdown() throws NotBoundException, RemoteException {
@@ -26,9 +46,9 @@ public class EvilServer {
         this.rmiServer.shutdown();
     }
 
-    public static void main(String[] args) throws NamingException, RemoteException, AlreadyBoundException {
+    public static void main(String[] args) throws NamingException, IOException, AlreadyBoundException {
 
-        new EvilServer().runServer();
+        new EvilServer("application.properties").runServer();
 
     }
 
